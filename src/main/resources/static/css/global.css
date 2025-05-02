@@ -1,0 +1,80 @@
+/* Reset di base per rimuovere margini e padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo della pagina */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9; /* Colore di sfondo più chiaro */
+    color: #444; /* Colore del testo più scuro per un miglior contrasto */
+    line-height: 1.6;
+}
+
+/* Header e navigazione */
+header {
+    background-color: #1c3d3a;
+    color: white;
+    padding: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Stili per la navigazione */
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    font-size: 18px;
+}
+
+/* Stili per i link */
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+nav a:hover {
+    background-color: #ff6f61;
+    transform: scale(1.05);
+}
+
+nav a:active {
+    background-color: #d04d3c;
+}
+
+/* Responsività per schermi più piccoli */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav a {
+        padding: 8px 15px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+}
