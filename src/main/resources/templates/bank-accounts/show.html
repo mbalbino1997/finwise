@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettagli Conto Promozione - Finwise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body th:replace="~{fragments/layout :: layout}">
+
+<section class="ml-64 p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-green-800">Dettagli del Piano</h2>
+        <div class="flex gap-2">
+            <a th:href="@{/bank-accounts/edit/{id}(id=${bankAccount.id})}" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded shadow">
+                Modifica
+            </a>
+            <th:block th:with="modalId='deleteModal__' + ${bankAccount.id}">
+    <!-- Bottone Elimina -->
+    <button type="button"
+            class="text-red-600 hover:text-red-800"
+            th:attr="data-modal-target=${modalId}, data-modal-toggle=${modalId}">
+        Elimina
+    </button>
+
+    <!-- Modale -->
+    <div th:attr="id=${modalId}"
+         tabindex="-1"
+         class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Conferma eliminazione</h3>
+            <p class="text-gray-600 mb-6">
+                Sei sicuro di voler eliminare il conto <strong th:text="${bankAccount.accountType}"></strong>
+                (ID: <span th:text="${bankAccount.id}"></span>)?
+            </p>
+            <div class="flex justify-end space-x-3">
+                <button type="button"
+                        class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
+                        th:attr="data-modal-hide=${modalId}">
+                    Annulla
+                </button>
+                <a th:href="@{/bank-accounts/delete/{id}(id=${bankAccount.id})}"
+                   class="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded">
+                    Elimina
+                </a>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-800">
+            <div>
+                <dt class="font-semibold">CODICE</dt>
+                <dd th:text="${bankAccount.promotionNumber}"></dd>
+            </div>
+            <div>
+                <dt class="font-semibold">Tipo Conto</dt>
+                <dd th:text="${bankAccount.accountType}"></dd>
+            </div>
+            <div>
+                <dt class="font-semibold">Canone Mensile (€)</dt>
+                <dd th:text="${#numbers.formatDecimal(bankAccount.monthlyFee, 1, 'POINT', 2, 'POINT')}"></dd>
+            </div>
+            <div>
+                <dt class="font-semibold">Tasso di Interesse (%)</dt>
+                <dd th:text="${#numbers.formatDecimal(bankAccount.interestRate, 1, 'POINT', 2, 'POINT')}"></dd>
+            </div>
+            <div>
+                <dt class="font-semibold">Saldo Minimo (€)</dt>
+                <dd th:text="${#numbers.formatDecimal(bankAccount.minBalance, 1, 'POINT', 2, 'POINT')}"></dd>
+            </div>
+            <div>
+                <dt class="font-semibold">Età Limite</dt>
+                <dd th:text="${bankAccount.ageLimit != null ? bankAccount.ageLimit : 'N/A'}"></dd>
+            </div>
+        </dl>
+    </div>
+</section>
+
+
+</body>
+</html>

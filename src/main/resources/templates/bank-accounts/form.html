@@ -1,13 +1,101 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Lista Carte</title>
+    <title>Gestione Conti Correnti - Finwise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
 </head>
-    <body th:replace="~{fragments/layout :: layout}">
-        <section >
-            <h1>sono nel form delgli account</h1>
-        </section>
-    </body>
+<body th:replace="~{fragments/layout :: layout}">
+<section class="ml-64">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6"
+                    th:text="${bankAccount.id == null} ? 'Aggiungi un nuovo tipo di conto corrente' : 'Modifica tipo conto corrente'">
+                </h1>
+
+                <form th:action="@{/bank-accounts/save}" th:object="${bankAccount}" method="post" class="space-y-6">
+                    <input type="hidden" th:field="*{id}" />
+                
+                    <!-- CODICE PROMOZIONE -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">CODICE Promozione</label>
+                        <input type="text" th:field="*{promotionNumber}" required
+                               class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                        <div th:if="${#fields.hasErrors('promotionNumber')}" class="text-red-600 text-sm mt-1" th:errors="*{promotionNumber}"></div>
+                    </div>
+                
+                    <!-- TIPO CONTO -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo Conto</label>
+                        <input type="text" th:field="*{accountType}" required
+                               class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                        <div th:if="${#fields.hasErrors('accountType')}" class="text-red-600 text-sm mt-1" th:errors="*{accountType}"></div>
+                    </div>
+                
+                    <!-- GRIGLIA INPUT -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <!-- SALDO MINIMO -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Saldo Minimo (€)</label>
+                            <input type="number" step="0.01" min="0" th:field="*{minBalance}"
+                                   class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                                   <div th:if="${#fields.hasErrors('minBalance')}" class="invalid-feedback">
+                                    <ul>
+                                        <li th:each="err : ${#fields.errors('minBalance')}" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                        </div>
+                
+                        <!-- LIMITE ETA -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Limite Età (opzionale)</label>
+                            <input type="number" step="1" min="0" th:field="*{ageLimit}"
+                                   class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                                   <div th:if="${#fields.hasErrors('ageLimit')}" class="invalid-feedback">
+                                    <ul>
+                                        <li th:each="err : ${#fields.errors('ageLimit')}" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                        </div>
+                
+                        <!-- CANONE MENSILE -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Canone Mensile (€)</label>
+                            <input type="number" step="0.01" min="0" th:field="*{monthlyFee}" required
+                                   class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                                   <div th:if="${#fields.hasErrors('monthlyFee')}" class="invalid-feedback">
+                                    <ul>
+                                        <li th:each="err : ${#fields.errors('monthlyFee')}" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                        </div>
+                
+                        <!-- TASSO DI INTERESSE -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tasso di Interesse (%)</label>
+                            <input type="number" step="0.01" min="0" th:field="*{interestRate}" required
+                                   class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                                   <div th:if="${#fields.hasErrors('interestRate')}" class="invalid-feedback">
+                                    <ul>
+                                        <li th:each="err : ${#fields.errors('interestRate')}" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                
+                    <!-- PULSANTI -->
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <a th:href="@{/bank-accounts}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 text-sm shadow">Annulla</a>
+                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded shadow">Salva</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

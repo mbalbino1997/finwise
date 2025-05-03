@@ -1,0 +1,26 @@
+<!-- fragments/button-fragments.html -->
+<div th:fragment="customButton(label, hrefOrTarget)">
+  <!-- Se NON è 'Elimina', mostra un link -->
+  <a th:if="${label != 'Elimina'}"
+     th:href="${hrefOrTarget}" 
+     class="group p-[4px] rounded-[5px] bg-gradient-to-b from-white to-stone-200/40 shadow-[0_1px_3px_rgba(0,0,0,0.5)] active:shadow-[0_0px_1px_rgba(0,0,0,0.5)] active:scale-[0.995] inline-block">
+    <div class="bg-gradient-to-b from-stone-200/40 to-white/80 rounded-[8px] px-1 py-1">
+      <div class="flex gap-2 items-center">
+        <span class="font-semibold" th:text="${label}">Etichetta</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Se è 'Elimina', mostra un button con stile simile ma rosso -->
+  <button th:if="${label == 'Elimina'}"
+          type="button"
+          class="group p-[4px] rounded-[5px] bg-gradient-to-b from-red-500 to-red-700 shadow-[0_1px_3px_rgba(0,0,0,0.5)] active:shadow-[0_0px_1px_rgba(0,0,0,0.5)] active:scale-[0.995] inline-block"
+          th:data-modal-target="${hrefOrTarget}"
+          th:data-modal-toggle="${hrefOrTarget}">
+    <div class="bg-gradient-to-b from-red-600 to-red-500 rounded-[8px] px-1 py-1">
+      <div class="flex gap-2 items-center">
+        <span class="font-semibold text-white" th:text="${label}">Elimina</span>
+      </div>
+    </div>
+  </button>
+</div>

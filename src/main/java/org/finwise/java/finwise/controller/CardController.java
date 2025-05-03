@@ -7,7 +7,10 @@ import org.finwise.java.finwise.service.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/cards")
@@ -33,7 +36,10 @@ public class CardController {
     }
 
     @PostMapping("/save")
-    public String saveCard(@ModelAttribute("card") Card card) {
+    public String saveCard(@Valid @ModelAttribute("card") Card card,BindingResult bindingresult, Model model) {
+        if(bindingresult.hasErrors()){
+            return "cards/form"; // templates/cards/form.html
+        }
         cardService.save(card);
         return "redirect:/cards";
     }

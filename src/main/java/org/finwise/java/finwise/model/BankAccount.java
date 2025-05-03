@@ -1,6 +1,10 @@
 package org.finwise.java.finwise.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +16,11 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "account_type", nullable = false)
+    @NotBlank(message = "Promotion number is mandatory") 
+    @Column(name = "promotion_number", nullable = false, unique = true)
+    private String promotionNumber;
+    @NotBlank(message = "Account type is mandatory")
+    @Column(name = "account_type", nullable = false, unique = true)
     private String accountType; // base, premium, giovani
 
     @Column(name = "monthly_fee", nullable = false)
@@ -21,7 +28,9 @@ public class BankAccount {
 
     @Column(name = "interest_rate", nullable = false)
     private BigDecimal interestRate;
-
+    
+    @NotNull(message = "Il saldo minimo non può essere nullo.")
+    @DecimalMin(value = "0.01", message = "Il saldo minimo deve essere maggiore di zero.")
     @Column(name = "min_balance", nullable = false)
     private BigDecimal minBalance;
 
@@ -98,6 +107,16 @@ public class BankAccount {
     public void setUserAccountMaps(List<UserAccountMap> userAccountMaps) {
         this.userAccountMaps = userAccountMaps;
     }
+
+    public String getPromotionNumber() {
+        return promotionNumber;
+    }
+
+    public void setPromotionNumber(String promotionNumber) {
+        this.promotionNumber = promotionNumber;
+    }
+
+    
 
     
    

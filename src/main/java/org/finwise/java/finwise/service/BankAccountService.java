@@ -28,4 +28,8 @@ public class BankAccountService {
     public void deleteById(Integer id) {
         bankAccountRepository.deleteById(id);
     }
+
+    public boolean existsByAccountType(String accountType) {
+        return bankAccountRepository.existsByAccountType(accountType);
+    }
 }

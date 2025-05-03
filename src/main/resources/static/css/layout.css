@@ -18,7 +18,7 @@ header {
     top: 0;
     left: 16rem; /* Parte dopo la sidebar */
     right: 0;
-    height: 4rem;
+    height: 5.5rem;
     z-index: 20;
     background-color: white;
     display: flex;
@@ -29,7 +29,6 @@ header {
 
 /* Wrapper contenuto principale */
 .main-content {
-    margin-left: 16rem; /* Larghezza sidebar */
     padding-top: 4rem;  /* Altezza header */
     height: 100vh;
     display: flex;
