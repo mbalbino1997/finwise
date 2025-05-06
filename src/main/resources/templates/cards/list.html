@@ -1,18 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Lista Carte</title>
+    <title>Gestione Carte - Finwise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/layout.css}">
     <link rel="stylesheet" th:href="@{/css/global.css}">
 </head>
-    <body th:replace="~{fragments/layout :: layout}"> 
-        
-        <section >
-        <h1>
-            sonso nel list dellle card
-        </h1>
-        </section>
-    </body>
+<body th:replace="~{fragments/layout :: layout}">
+
+<section class="ml-64 p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-green-800">Gestione delle Carte</h2>
+        <a th:href="@{/cards/create}" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded shadow">
+            + Nuovo Tipo di Carta
+        </a>
+    </div>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full text-sm divide-y divide-gray-200">
+            <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
+                <tr>
+                    <th class="px-4 py-3">ID</th>
+                    <th class="px-4 py-3">Tipo di Carta</th>
+                    <th class="px-4 py-3">Limite di Spesa (€)</th>
+                    <th class="px-4 py-3 text-center">Azioni</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100" th:each="card : ${cards}">
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3" th:text="${card.id}"></td>
+                    <td class="px-4 py-3" th:text="${card.cardType}"></td>
+                    <td class="px-4 py-3" th:text="${#numbers.formatDecimal(card.spendingLimit, 1, 'POINT', 2, 'POINT')}"></td>
+                    <td class="px-4 py-3 text-center space-x-2">
+                        <div class="flex items-center justify-center space-x-4">
+                            <div th:replace="fragments/button-details :: detail-button(@{/cards/details/{id}(id=${card.id})})"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+</body>
+</html>

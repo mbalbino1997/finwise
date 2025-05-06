@@ -33,9 +33,6 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ProfileUser profile;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserAccountMap> userAccountMaps = new ArrayList<>();
-
     
     public ProfileUser getProfile() {
         return profile;
@@ -85,12 +82,5 @@ public class User {
         this.transactions = transactions;
     }
 
-    public List<UserAccountMap> getUserAccountMaps() {
-        return userAccountMaps;
-    }
-
-    public void setUserAccountMaps(List<UserAccountMap> userAccountMaps) {
-        this.userAccountMaps = userAccountMaps;
-    }
 
 }

@@ -2,6 +2,10 @@ package org.finwise.java.finwise.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "cards")
@@ -17,9 +21,16 @@ public class Card {
     @Column(name = "spending_limit", nullable = false)
     private BigDecimal spendingLimit;
 
-    @ManyToOne
-    @JoinColumn(name = "bank_account_id", nullable = false)
-    private BankAccount bankAccount;
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CardPersonal> cardPersonals = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "cards")
+    @JsonBackReference
+    private List<BankAccount> bankAccounts = new ArrayList<>();
+
+
+
+    // Getters and Setters
 
     public Integer getId() {
         return id;
@@ -45,16 +56,19 @@ public class Card {
         this.spendingLimit = spendingLimit;
     }
 
-    public BankAccount getBankAccount() {
-        return bankAccount;
+    public List<BankAccount> getBankAccounts() {
+        return bankAccounts;
     }
 
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
+    public void setBankAccounts(List<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
     }
 
-    // Getters, Setters, Constructors
-
+    public List<CardPersonal> getCardPersonals() {
+        return cardPersonals;
+    }
     
+    public void setCardPersonals(List<CardPersonal> cardPersonals) {
+        this.cardPersonals = cardPersonals;
+    }
 }
-

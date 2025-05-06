@@ -16,9 +16,11 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotBlank(message = "Promotion number is mandatory") 
+
+    @NotBlank(message = "Promotion number is mandatory")
     @Column(name = "promotion_number", nullable = false, unique = true)
     private String promotionNumber;
+
     @NotBlank(message = "Account type is mandatory")
     @Column(name = "account_type", nullable = false, unique = true)
     private String accountType; // base, premium, giovani
@@ -28,7 +30,7 @@ public class BankAccount {
 
     @Column(name = "interest_rate", nullable = false)
     private BigDecimal interestRate;
-    
+
     @NotNull(message = "Il saldo minimo non può essere nullo.")
     @DecimalMin(value = "0.01", message = "Il saldo minimo deve essere maggiore di zero.")
     @Column(name = "min_balance", nullable = false)
@@ -37,12 +39,23 @@ public class BankAccount {
     @Column(name = "age_limit")
     private Integer ageLimit;
 
-    @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+        name = "bank_account_card",
+        joinColumns = @JoinColumn(name = "bank_account_id"),
+        inverseJoinColumns = @JoinColumn(name = "card_id")
+    )
     private List<Card> cards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserAccountMap> userAccountMaps = new ArrayList<>();
-     // Getters, Setters, Constructors
+    @ManyToMany
+    @JoinTable(
+        name = "bank_account_promotion",
+        joinColumns = @JoinColumn(name = "bank_account_id"),
+        inverseJoinColumns = @JoinColumn(name = "promotion_id")
+    )
+    private List<Promotion> promotions = new ArrayList<>();
+
+    // Getters and Setters
 
     public Integer getId() {
         return id;
@@ -50,6 +63,14 @@ public class BankAccount {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getPromotionNumber() {
+        return promotionNumber;
+    }
+
+    public void setPromotionNumber(String promotionNumber) {
+        this.promotionNumber = promotionNumber;
     }
 
     public String getAccountType() {
@@ -100,28 +121,11 @@ public class BankAccount {
         this.cards = cards;
     }
 
-    public List<UserAccountMap> getUserAccountMaps() {
-        return userAccountMaps;
+    public List<Promotion> getPromotions() {
+        return promotions;
     }
 
-    public void setUserAccountMaps(List<UserAccountMap> userAccountMaps) {
-        this.userAccountMaps = userAccountMaps;
+    public void setPromotions(List<Promotion> promotions) {
+        this.promotions = promotions;
     }
-
-    public String getPromotionNumber() {
-        return promotionNumber;
-    }
-
-    public void setPromotionNumber(String promotionNumber) {
-        this.promotionNumber = promotionNumber;
-    }
-
-    
-
-    
-   
-
-    
-
 }
-

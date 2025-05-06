@@ -17,39 +17,38 @@
             <a th:href="@{/bank-accounts/edit/{id}(id=${bankAccount.id})}" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded shadow">
                 Modifica
             </a>
+            <!-- Bottone Elimina e Modale -->
             <th:block th:with="modalId='deleteModal__' + ${bankAccount.id}">
-    <!-- Bottone Elimina -->
-    <button type="button"
-            class="text-red-600 hover:text-red-800"
-            th:attr="data-modal-target=${modalId}, data-modal-toggle=${modalId}">
-        Elimina
-    </button>
-
-    <!-- Modale -->
-    <div th:attr="id=${modalId}"
-         tabindex="-1"
-         class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Conferma eliminazione</h3>
-            <p class="text-gray-600 mb-6">
-                Sei sicuro di voler eliminare il conto <strong th:text="${bankAccount.accountType}"></strong>
-                (ID: <span th:text="${bankAccount.id}"></span>)?
-            </p>
-            <div class="flex justify-end space-x-3">
                 <button type="button"
-                        class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-                        th:attr="data-modal-hide=${modalId}">
-                    Annulla
-                </button>
-                <a th:href="@{/bank-accounts/delete/{id}(id=${bankAccount.id})}"
-                   class="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded">
+                        class="text-red-600 hover:text-red-800"
+                        th:attr="data-modal-target=${modalId}, data-modal-toggle=${modalId}">
                     Elimina
-                </a>
-            </div>
-        </div>
-    </div>
-</th:block>
+                </button>
 
+                <!-- Modale per Conferma Eliminazione -->
+                <div th:attr="id=${modalId}"
+                     tabindex="-1"
+                     class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Conferma eliminazione</h3>
+                        <p class="text-gray-600 mb-6">
+                            Sei sicuro di voler eliminare il conto <strong th:text="${bankAccount.accountType}"></strong>
+                            (ID: <span th:text="${bankAccount.id}"></span>)?
+                        </p>
+                        <div class="flex justify-end space-x-3">
+                            <button type="button"
+                                    class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
+                                    th:attr="data-modal-hide=${modalId}">
+                                Annulla
+                            </button>
+                            <a th:href="@{/bank-accounts/delete/{id}(id=${bankAccount.id})}"
+                               class="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded">
+                                Elimina
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
         </div>
     </div>
 
@@ -81,8 +80,47 @@
             </div>
         </dl>
     </div>
-</section>
 
+    <!-- Sezione per i Tipi di Carta associati al Piano -->
+    <div class="mt-6">
+        <h3 class="text-xl font-semibold text-green-800">Carte Associate a Questo Piano</h3>
+        <ul class="list-disc pl-6 mt-4">
+            <th:block th:each="card : ${bankAccount.cards}">
+                <li th:text="'Tipo di carta:'+${card.cardType}"></li>
+                <li th:text="'Limite spesa:'+${card.spendingLimit}"></li>
+            </th:block>
+        </ul>
+
+        <!-- Bottone per Aggiungere Tipo di Carta -->
+        <button type="button" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" data-modal-target="addCardModal" data-modal-toggle="addCardModal">
+            Aggiungi Tipo di Carta
+        </button>
+    </div>
+
+    <!-- Modale per Aggiungere Tipi di Carta -->
+    <div id="addCardModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Seleziona i Tipi di Carta da Aggiungere</h3>
+            <form th:action="@{/bank-accounts/add-cards/{id}(id=${bankAccount.id})}" method="post">
+                <th:block th:each="card : ${allCards}">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" th:id="'card_' + ${card.id}" name="cards" th:value="${card.id}" class="mr-2">
+                        <label th:for="'card_' + ${card.id}" th:text="${card.cardType}"></label>
+                    </div>
+                </th:block>
+                <div class="flex justify-end space-x-3 mt-4">
+                    <button type="button" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" data-modal-hide="addCardModal">
+                        Annulla
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded">
+                        Aggiungi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
 
 </body>
 </html>

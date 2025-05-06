@@ -1,16 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Lista Carte</title>
+    <title>Gestione Carte - Finwise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
 </head>
-    <body th:replace="~{fragments/layout :: layout}"> 
-        
-        <section >
-        <h1>
-            sonso nel form dellle card
-        </h1>
-        </section>
-    </body>
+<body th:replace="~{fragments/layout :: layout}">
+<section class="ml-64">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6"
+                    th:text="${card.id == null} ? 'Aggiungi una nuova carta' : 'Modifica carta'">
+                </h1>
+
+                <form th:action="@{/cards/save}" th:object="${card}" method="post" class="space-y-6">
+                    <input type="hidden" th:field="*{id}" />
+
+                    <!-- TIPO CARTA -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo Carta</label>
+                        <input type="text" th:field="*{cardType}" required
+                               placeholder="Debito, Credito, Prepagata"
+                               class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                        <div th:if="${#fields.hasErrors('cardType')}" class="text-red-600 text-sm mt-1" th:errors="*{cardType}"></div>
+                    </div>
+
+                    <!-- LIMITE DI SPESA -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Limite di Spesa (€)</label>
+                        <input type="number" step="0.01" min="0" th:field="*{spendingLimit}" required
+                               class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                        <div th:if="${#fields.hasErrors('spendingLimit')}" class="text-red-600 text-sm mt-1" th:errors="*{spendingLimit}"></div>
+                    </div>
+
+                    <!-- PULSANTI -->
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <a th:href="@{/cards}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 text-sm shadow">Annulla</a>
+                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded shadow">Salva</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

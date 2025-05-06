@@ -1,7 +1,9 @@
 package org.finwise.java.finwise.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +32,11 @@ public class Promotion {
     @Column(name = "applicable_to", nullable = false)
     private String applicableTo; // account, card, both
 
-    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserAccountMap> userAccountMaps = new ArrayList<>();
+    @ManyToMany(mappedBy = "promotions")
+    @JsonBackReference
+    private List<BankAccount> bankAccounts = new ArrayList<>();
 
-
-    // Getters, Setters, Constructors
+    // Getters, Setters
 
     public Integer getId() {
         return id;
@@ -84,16 +86,11 @@ public class Promotion {
         this.applicableTo = applicableTo;
     }
 
-    public List<UserAccountMap> getUserAccountMaps() {
-        return userAccountMaps;
+    public List<BankAccount> getBankAccounts() {
+        return bankAccounts;
     }
 
-    public void setUserAccountMaps(List<UserAccountMap> userAccountMaps) {
-        this.userAccountMaps = userAccountMaps;
+    public void setBankAccounts(List<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
     }
-
-    
-
-    
-    
 }

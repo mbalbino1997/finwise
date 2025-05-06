@@ -3,6 +3,7 @@ package org.finwise.java.finwise.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "user_profile")
@@ -18,21 +19,24 @@ public class ProfileUser {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
-    
+
     @Column(name = "income_range")
     private BigDecimal incomeRange;
-    
+
     @Column(name = "risk_tolerance", nullable = false)
     private String riskTolerance; // "basso", "medio", "alto"
-    
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
-    
-    // Getters, Setters, Constructors
+
+    @OneToMany(mappedBy = "profileUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CardPersonal> cards;
+
+    // Getters and Setters
+
     public Integer getId() {
         return id;
     }
@@ -88,5 +92,12 @@ public class ProfileUser {
     public void setUser(User user) {
         this.user = user;
     }
-}
 
+    public List<CardPersonal> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<CardPersonal> cards) {
+        this.cards = cards;
+    }
+}
