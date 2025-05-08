@@ -1,5 +1,6 @@
 package org.finwise.java.finwise.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.finwise.java.finwise.model.BankAccount;
@@ -7,7 +8,6 @@ import org.finwise.java.finwise.model.Card;
 import org.finwise.java.finwise.service.BankAccountService;
 import org.finwise.java.finwise.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -97,9 +97,9 @@ public String showAddCardsModal(@PathVariable Integer id, Model model) {
 
 
     @PostMapping("/add-cards/{id}")
-public String addCardsToAccount(@PathVariable Integer id, @RequestParam List<Integer> cards) {
+public String addCardsToAccount(@PathVariable Integer id, @RequestParam(name = "cards", required = false) List<Integer> cards) {
     BankAccount bankAccount = bankAccountService.findById(id);
-    List<Card> selectedCards = cardService.findByIds(cards); // Cambia da Long a Integer
+   List<Card> selectedCards = (cards != null) ? cardService.findByIds(cards) : new ArrayList<>();
     bankAccount.setCards(selectedCards);
     bankAccountService.save(bankAccount);
     return "redirect:/bank-accounts/details/" + id;

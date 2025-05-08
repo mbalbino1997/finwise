@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Promozioni - Finwise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body th:replace="~{fragments/layout :: layout}">
+<section class="ml-64">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6"
+                    th:text="${promotion.id == null} ? 'Aggiungi una nuova promozione' : 'Modifica promozione'">
+                </h1>
+
+                <form th:action="@{/promotions/save}" th:object="${promotion}" method="post" class="space-y-6">
+                    <input type="hidden" th:field="*{id}" />
+                
+                    <!-- NOME PROMOZIONE -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nome Promozione</label>
+                        <input type="text" th:field="*{name}" required
+                               class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                        <div th:if="${#fields.hasErrors('name')}" class="text-red-600 text-sm mt-1" th:errors="*{name}"></div>
+                    </div>
+                
+                    <!-- DESCRIZIONE -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Descrizione</label>
+                        <textarea th:field="*{description}" required rows="3"
+                                  class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"></textarea>
+                        <div th:if="${#fields.hasErrors('description')}" class="text-red-600 text-sm mt-1" th:errors="*{description}"></div>
+                    </div>
+                
+                    <!-- DATA INIZIO e DATA FINE -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Data Inizio</label>
+                            <input type="date" th:field="*{startDate}" required
+                                   class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                            <div th:if="${#fields.hasErrors('startDate')}" class="text-red-600 text-sm mt-1" th:errors="*{startDate}"></div>
+                        </div>
+                
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Data Fine</label>
+                            <input type="date" th:field="*{endDate}" required
+                                   class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm"/>
+                            <div th:if="${#fields.hasErrors('endDate')}" class="text-red-600 text-sm mt-1" th:errors="*{endDate}"></div>
+                        </div>
+                    </div>
+                
+                    <!-- Applicabile a -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Applicabile a</label>
+                        <select th:field="*{applicableTo}" required
+                                class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 text-sm">
+                            <option value="">-- Seleziona --</option>
+                            <option value="account">Conto</option>
+                            <option value="card">Carta</option>
+                            <option value="both">Entrambi</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('applicableTo')}" class="text-red-600 text-sm mt-1" th:errors="*{applicableTo}"></div>
+                    </div>
+                
+                    <!-- PULSANTI -->
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <a th:href="@{/promotions}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 text-sm shadow">Annulla</a>
+                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded shadow">Salva</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

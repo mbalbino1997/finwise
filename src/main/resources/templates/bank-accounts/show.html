@@ -83,6 +83,9 @@
 
     <!-- Sezione per i Tipi di Carta associati al Piano -->
     <div class="mt-6">
+        <button type="button" class="mb-6 bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded shadow" data-modal-target="addCardModal" data-modal-toggle="addCardModal">
+            Gestisci tipi di carta associati al piano
+        </button>
         <h3 class="text-xl font-semibold text-green-800">Carte Associate a Questo Piano</h3>
         <ul class="list-disc pl-6 mt-4">
             <th:block th:each="card : ${bankAccount.cards}">
@@ -90,21 +93,16 @@
                 <li th:text="'Limite spesa:'+${card.spendingLimit}"></li>
             </th:block>
         </ul>
-
-        <!-- Bottone per Aggiungere Tipo di Carta -->
-        <button type="button" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" data-modal-target="addCardModal" data-modal-toggle="addCardModal">
-            Aggiungi Tipo di Carta
-        </button>
     </div>
 
     <!-- Modale per Aggiungere Tipi di Carta -->
     <div id="addCardModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Seleziona i Tipi di Carta da Aggiungere</h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Seleziona i Tipi di Carta che vuoi associare a questo piano</h3>
             <form th:action="@{/bank-accounts/add-cards/{id}(id=${bankAccount.id})}" method="post">
                 <th:block th:each="card : ${allCards}">
                     <div class="flex items-center mb-2">
-                        <input type="checkbox" th:id="'card_' + ${card.id}" name="cards" th:value="${card.id}" class="mr-2">
+                        <input type="checkbox" th:id="'card_' + ${card.id}" name="cards" th:value="${card.id}" class="mr-2" th:checked="${#lists.contains(bankAccount.cards, card)}">
                         <label th:for="'card_' + ${card.id}" th:text="${card.cardType}"></label>
                     </div>
                 </th:block>
@@ -113,7 +111,7 @@
                         Annulla
                     </button>
                     <button type="submit" class="px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded">
-                        Aggiungi
+                        Conferma associazioni 
                     </button>
                 </div>
             </form>
