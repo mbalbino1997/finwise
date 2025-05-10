@@ -1,33 +1,106 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Benvenuto - FinWise Backoffice</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+  <meta charset="UTF-8">
+  <title>FinWise Back-Office - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+  <link rel="stylesheet" th:href="@{/css/layout.css}">
+  <link rel="stylesheet" th:href="@{/css/global.css}">
 </head>
-<body th:replace="~{fragments/layout :: layout}" >
-    <div >
-        <section class="bg-gray-100 p-6 rounded-lg shadow">
-            <h1 class="text-3xl font-bold text-green-800 mb-4">Benvenuto in FinWise Backoffice</h1>
-            <p class="text-gray-700 mb-6">
-                Gestisci conti correnti, carte e promozioni in modo semplice ed efficiente. Utilizza il menu laterale per navigare tra le sezioni disponibili.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <a th:href="@{/bank-accounts}" class="block bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-                    <h2 class="text-xl font-semibold text-green-700 mb-2">Conti Correnti</h2>
-                    <p class="text-gray-600">Visualizza e gestisci i conti correnti dei clienti.</p>
-                </a>
-                <a th:href="@{/cards}" class="block bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-                    <h2 class="text-xl font-semibold text-green-700 mb-2">Carte</h2>
-                    <p class="text-gray-600">Gestisci le carte di credito e debito associate ai conti.</p>
-                </a>
-                <a th:href="@{/promotions}" class="block bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-                    <h2 class="text-xl font-semibold text-green-700 mb-2">Promozioni</h2>
-                    <p class="text-gray-600">Crea e gestisci promozioni per i clienti.</p>
-                </a>
-            </div>
-        </section>
-    </div>
+<body th:replace="~{fragments/layout :: layout}" class="bg-gray-100 text-gray-800">
+
+<div th:fragment="section">
+  <div class="container ml-64 mx-auto p-6 space-y-12">
+    <!-- Sezione Gestione Prodotti -->
+    <section>
+      <h2 class="text-2xl font-bold text-green-800 mb-6">Gestione Prodotti</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card Piani -->
+        <a th:href="@{/bank-accounts}"
+           class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6">
+          <div class="flex items-center justify-center mb-4">
+            <!-- Icona Piani -->
+            <svg class="w-12 h-12 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 6h18M3 14h18M3 18h18"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Piani</h3>
+          <p class="text-gray-600 text-sm">Crea, modifica e visualizza i piani bancari disponibili per i clienti.</p>
+        </a>
+        <!-- Card Carte -->
+        <a th:href="@{/cards}"
+           class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6">
+          <div class="flex items-center justify-center mb-4">
+            <!-- Icona Carte -->
+            <svg class="w-12 h-12 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Carte</h3>
+          <p class="text-gray-600 text-sm">Gestisci tutte le carte di credito e debito emesse dalla banca.</p>
+        </a>
+        <!-- Card Promozioni -->
+        <a th:href="@{/promotions}"
+           class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6">
+          <div class="flex items-center justify-center mb-4">
+            <!-- Icona Promozioni -->
+            <svg class="w-12 h-12 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Promozioni</h3>
+          <p class="text-gray-600 text-sm">Crea e gestisci le promozioni e offerte speciali per i clienti.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Sezione Gestione Utenti -->
+    <section>
+      <h2 class="text-2xl font-bold text-green-800 mb-6">Gestione Utenti</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card Utenti -->
+        <a th:href="@{/users}"
+           class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6">
+          <div class="flex items-center justify-center mb-4">
+            <!-- Icona Utenti -->
+            <svg class="w-12 h-12 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M16 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Utenti</h3>
+          <p class="text-gray-600 text-sm">Visualizza e gestisci gli account utente registrati.</p>
+        </a>
+        <!-- Card Carte Utente -->
+        <a th:href="@{/user-cards}"
+           class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6">
+          <div class="flex items-center justify-center mb-4">
+            <!-- Icona Carte Utente -->
+            <svg class="w-12 h-12 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M10 17h11"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Carte Utente</h3>
+          <p class="text-gray-600 text-sm">Controlla e modifica le carte associate a ciascun utente.</p>
+        </a>
+        <!-- Card Transazioni -->
+        <a th:href="@{/transactions}"
+           class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6">
+          <div class="flex items-center justify-center mb-4">
+            <!-- Icona Transazioni -->
+            <svg class="w-12 h-12 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Transazioni</h3>
+          <p class="text-gray-600 text-sm">Monitora e analizza le transazioni effettuate dagli utenti.</p>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
 </body>
 </html>
