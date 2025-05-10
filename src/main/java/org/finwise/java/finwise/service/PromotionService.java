@@ -1,5 +1,6 @@
 package org.finwise.java.finwise.service;
 
+import org.finwise.java.finwise.model.Card;
 import org.finwise.java.finwise.model.Promotion;
 import org.finwise.java.finwise.repository.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,9 @@ public class PromotionService {
 
     public void deleteById(Integer id) {
         promotionRepository.deleteById(id);
+    }
+
+    public List<Promotion> findByIds(List<Integer> ids) {
+        return promotionRepository.findAllByIdIn(ids); // Usa il nuovo metodo che accetta una lista di IDs
     }
 }

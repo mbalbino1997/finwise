@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.finwise.java.finwise.model.BankAccount;
 import org.finwise.java.finwise.model.Card;
+import org.finwise.java.finwise.model.Promotion;
 import org.finwise.java.finwise.service.BankAccountService;
 import org.finwise.java.finwise.service.CardService;
+import org.finwise.java.finwise.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class BankAccountController {
     private BankAccountService bankAccountService;
 
     @Autowired
+    private PromotionService promotionService;
+
+    @Autowired
     private CardService cardService;
     @GetMapping
     public String listBankAccounts(Model model) {
@@ -36,6 +41,7 @@ public String showDetails(@PathVariable("id") Integer id, Model model) {
     if (account != null) {
         model.addAttribute("bankAccount", account);
         model.addAttribute("allCards", cardService.findAll());
+        model.addAttribute("allPromotions", promotionService.findAll());
         return "bank-accounts/show";
     }
     return "redirect:/bank-accounts";
@@ -101,6 +107,29 @@ public String addCardsToAccount(@PathVariable Integer id, @RequestParam(name = "
     BankAccount bankAccount = bankAccountService.findById(id);
    List<Card> selectedCards = (cards != null) ? cardService.findByIds(cards) : new ArrayList<>();
     bankAccount.setCards(selectedCards);
+    bankAccountService.save(bankAccount);
+    return "redirect:/bank-accounts/details/" + id;
+}
+
+
+@GetMapping("/add-promotions/{id}")
+public String showAddPromotionsModal(@PathVariable Integer id, Model model) {
+    BankAccount bankAccount = bankAccountService.findById(id);
+    if (bankAccount != null) {
+        model.addAttribute("bankAccount", bankAccount);
+        List<Promotion> allPromotions = promotionService.findAll(); // Recupera tutte le promozioni
+        model.addAttribute("allPromotions", allPromotions);
+        return "bank-accounts/show"; // Stessa vista dei dettagli
+    }
+    return "redirect:/bank-accounts";
+}
+
+
+@PostMapping("/add-promotions/{id}")
+public String addPromotionsToAccount(@PathVariable Integer id, @RequestParam(name = "promotions", required = false) List<Integer> promotions) {
+    BankAccount bankAccount = bankAccountService.findById(id);
+    List<Promotion> selectedPromotions = (promotions != null) ? promotionService.findByIds(promotions) : new ArrayList<>();
+    bankAccount.setPromotions(selectedPromotions);
     bankAccountService.save(bankAccount);
     return "redirect:/bank-accounts/details/" + id;
 }
