@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Transazioni per Carte Personali - Finwise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body th:replace="~{fragments/layout :: layout}">
+
+<section class="ml-64 p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-green-800">Transazioni per Carte Personali</h2>
+    </div>
+
+    <th:block th:each="card : ${cards}">
+        <div class="overflow-x-auto bg-white rounded-lg shadow mb-8">
+            <div class="px-6 py-4 border-b">
+                <h3 class="text-xl font-semibold text-gray-800"
+                    th:text="'Carta #' + ${card.id} + ' – ' +
+                             ${#strings.substring(card.cardNumber,0,4)} + ' **** **** ' +
+                             ${#strings.substring(card.cardNumber, card.cardNumber.length()-4)}">
+                </h3>
+                <p class="text-sm text-gray-600"
+                   th:text="'Scadenza: ' + ${card.expirationDate}"></p>
+            </div>
+            <table class="min-w-full text-sm divide-y divide-gray-200">
+                <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
+                    <tr>
+                        <th class="px-4 py-3">Data</th>
+                        <th class="px-4 py-3">Tipo</th>
+                        <th class="px-4 py-3">Descrizione</th>
+                        <th class="px-4 py-3 text-right">Importo (€)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100" th:each="tx : ${card.transactions}">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3" th:text="${#temporals.format(tx.date, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td class="px-4 py-3" th:text="${tx.type}"></td>
+                        <td class="px-4 py-3" th:text="${tx.description}"></td>
+                        <td class="px-4 py-3 text-right"
+                            th:text="${#numbers.formatDecimal(tx.amount,1,'POINT',2,'POINT')}"></td>
+                    </tr>
+                </tbody>
+                <tbody th:if="${#lists.isEmpty(card.transactions)}">
+                    <tr>
+                        <td class="px-4 py-3 text-center text-gray-500" colspan="4">
+                            Nessuna transazione per questa carta.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </th:block>
+</section>
+
+</body>
+</html>

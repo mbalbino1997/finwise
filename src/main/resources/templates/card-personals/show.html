@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettagli Carta Personale - Finwise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body th:replace="~{fragments/layout :: layout}">
+
+<section class="ml-64 p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-green-800">Dettagli Carta Personale</h2>
+        <a th:href="@{/card-personals}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded shadow">Torna alla lista</a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-800">
+            <div><dt class="font-semibold">ID</dt><dd th:text="${cardPersonal.id}"></dd></div>
+            <div><dt class="font-semibold">Numero Carta</dt><dd th:text="${#strings.substring(cardPersonal.cardNumber,0,4)} + ' **** **** ' + ${#strings.substring(cardPersonal.cardNumber,12)}"></dd></div>
+            <div><dt class="font-semibold">CVV</dt><dd th:text="${cardPersonal.cvv}"></dd></div>
+            <div><dt class="font-semibold">Scadenza</dt><dd th:text="${cardPersonal.expirationDate}"></dd></div>
+            <div><dt class="font-semibold">Profilo Utente</dt><dd th:text="${cardPersonal.profileUser.firstName} + ' ' + ${cardPersonal.profileUser.lastName}"></dd></div>
+            <div><dt class="font-semibold">Tipo Carta</dt><dd th:text="${cardPersonal.card.cardType}"></dd></div>
+        </dl>
+    </div>
+
+    <!-- Transazioni -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold text-green-800 mb-4">Transazioni</h3>
+        <table class="min-w-full text-sm divide-y divide-gray-200">
+            <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
+                <tr>
+                    <th class="px-4 py-3">Data</th>
+                    <th class="px-4 py-3">Descrizione</th>
+                    <th class="px-4 py-3">Importo (€)</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100" th:each="tx : ${transactions}">
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3" th:text="${tx.date}"></td>
+                    <td class="px-4 py-3" th:text="${tx.description}"></td>
+                    <td class="px-4 py-3" th:text="${#numbers.formatDecimal(tx.amount,1,'POINT',2,'POINT')}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+</body>
+</html>
