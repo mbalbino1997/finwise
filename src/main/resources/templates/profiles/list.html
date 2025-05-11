@@ -18,7 +18,7 @@
     <div class="overflow-x-auto bg-white rounded-lg shadow">
         <table class="min-w-full text-sm divide-y divide-gray-200">
             <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
-                <tr>
+                <tr class="divide-x divide-gray-200">
                     <th class="px-4 py-3">Nome</th>
                     <th class="px-4 py-3">Cognome</th>
                     <th class="px-4 py-3">Data di Nascita</th>
@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100" th:each="profile : ${profiles}">
-                <tr class="hover:bg-gray-50">
+                <tr class="hover:bg-gray-50 divide-x divide-gray-200">
                     <td class="px-4 py-3" th:text="${profile.firstName}"></td>
                     <td class="px-4 py-3" th:text="${profile.lastName}"></td>
                     <td class="px-4 py-3" th:text="${#temporals.format(profile.birthDate, 'dd/MM/yyyy')}"></td>

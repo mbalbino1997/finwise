@@ -21,7 +21,7 @@
     <div class="overflow-x-auto bg-white rounded-lg shadow">
         <table class="min-w-full text-sm divide-y divide-gray-200">
             <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
-                <tr>
+                <tr class="divide-x divide-gray-200">
                     <th class="px-4 py-3">ID</th>
                     <th class="px-4 py-3">Nome</th>
                     <th class="px-4 py-3">Periodo</th>
@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100" th:each="promo : ${promotions}">
-                <tr class="hover:bg-gray-50">
+                <tr class="hover:bg-gray-50 divide-x divide-gray-200">
                     <td class="px-4 py-3" th:text="${promo.id}"></td>
                     <td class="px-4 py-3" th:text="${promo.name}"></td>
                     <td class="px-4 py-3" th:text="${promo.startDate} + ' → ' + ${promo.endDate}"></td>
@@ -41,10 +41,10 @@
                                 <img src="/images/edit.png" class="w-6 h-6" />
                             </a>
                             <a href="#"
-                               data-modal-target="deleteModal"
-                               data-modal-toggle="deleteModal"
-                               data-promo-id="[[${promo.id}]]"
-                               class="delete-button">
+                            data-modal-target="deleteModal"
+                            data-modal-toggle="deleteModal"
+                            data-promo-id="[[${promo.id}]]"
+                            class="delete-button">
                                 <img src="/images/delete.png" class="w-6 h-6" />
                             </a>
                         </div>

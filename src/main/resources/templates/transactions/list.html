@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Transazioni per Carte Personali - Finwise</title>
+    <title>Transazioni - Finwise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/layout.css}">
@@ -11,49 +11,68 @@
 <body th:replace="~{fragments/layout :: layout}">
 
 <section class="ml-64 p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-bold text-green-800">Transazioni per Carte Personali</h2>
-    </div>
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-3xl font-bold text-green-800">Tutte le Transazioni</h2>
+    <form th:action="@{/transactions}" method="get" class="flex space-x-2">
+      <input type="text" name="q" placeholder="Cerca nome o cognome"
+             class="px-3 py-2 border rounded" th:value="${q}">
+      <button type="submit"
+              class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded">
+        Cerca
+      </button>
+    </form>
+  </div>
 
-    <th:block th:each="card : ${cards}">
-        <div class="overflow-x-auto bg-white rounded-lg shadow mb-8">
-            <div class="px-6 py-4 border-b">
-                <h3 class="text-xl font-semibold text-gray-800"
-                    th:text="'Carta #' + ${card.id} + ' – ' +
-                             ${#strings.substring(card.cardNumber,0,4)} + ' **** **** ' +
-                             ${#strings.substring(card.cardNumber, card.cardNumber.length()-4)}">
-                </h3>
-                <p class="text-sm text-gray-600"
-                   th:text="'Scadenza: ' + ${card.expirationDate}"></p>
-            </div>
-            <table class="min-w-full text-sm divide-y divide-gray-200">
-                <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
-                    <tr>
-                        <th class="px-4 py-3">Data</th>
-                        <th class="px-4 py-3">Tipo</th>
-                        <th class="px-4 py-3">Descrizione</th>
-                        <th class="px-4 py-3 text-right">Importo (€)</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100" th:each="tx : ${card.transactions}">
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3" th:text="${#temporals.format(tx.date, 'dd/MM/yyyy HH:mm')}"></td>
-                        <td class="px-4 py-3" th:text="${tx.type}"></td>
-                        <td class="px-4 py-3" th:text="${tx.description}"></td>
-                        <td class="px-4 py-3 text-right"
-                            th:text="${#numbers.formatDecimal(tx.amount,1,'POINT',2,'POINT')}"></td>
-                    </tr>
-                </tbody>
-                <tbody th:if="${#lists.isEmpty(card.transactions)}">
-                    <tr>
-                        <td class="px-4 py-3 text-center text-gray-500" colspan="4">
-                            Nessuna transazione per questa carta.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </th:block>
+  <div class="flex justify-start space-x-4 mb-4">
+    <a th:href="@{/transactions(sortField='amount', sortDir='asc', q=${q})}"
+       class="px-3 py-1 bg-green-200 rounded"
+       th:classappend="${sortField=='amount' && sortDir=='asc'} ? ' font-semibold bg-green-400'">Importo ↑</a>
+    <a th:href="@{/transactions(sortField='amount', sortDir='desc', q=${q})}"
+       class="px-3 py-1 bg-green-200 rounded"
+       th:classappend="${sortField=='amount' && sortDir=='desc'} ? ' font-semibold bg-green-400'">Importo ↓</a>
+    <a th:href="@{/transactions(sortField='date', sortDir='asc', q=${q})}"
+       class="px-3 py-1 bg-green-200 rounded"
+       th:classappend="${sortField=='date' && sortDir=='asc'} ? ' font-semibold bg-green-400'">Data ↑</a>
+    <a th:href="@{/transactions(sortField='date', sortDir='desc', q=${q})}"
+       class="px-3 py-1 bg-green-200 rounded"
+       th:classappend="${sortField=='date' && sortDir=='desc'} ? ' font-semibold bg-green-400'">Data ↓</a>
+  </div>
+
+  <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="min-w-full text-sm border border-gray-200 divide-y divide-gray-200 border-collapse">
+      <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
+        <tr>
+          <th class="border px-4 py-3">Data</th>
+          <th class="border px-4 py-3">Nome</th>
+          <th class="border px-4 py-3">Cognome</th>
+          <th class="border px-4 py-3">Numero Carta</th>
+          <th class="border px-4 py-3">Tipo</th>
+          <th class="border px-4 py-3">Descrizione</th>
+          <th class="border px-4 py-3 text-right">Importo (€)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hover:bg-gray-50" th:each="tx : ${transactions}">
+          <td class="border px-4 py-3" th:text="${#temporals.format(tx.date,'dd/MM/yyyy')}"></td>
+          <td class="border px-4 py-3" th:text="${tx.cardPersonal.profileUser.firstName}"></td>
+          <td class="border px-4 py-3" th:text="${tx.cardPersonal.profileUser.lastName}"></td>
+          <td class="border px-4 py-3" th:text="${#strings.substring(tx.cardPersonal.cardNumber,0,4) + ' **** **** ' + #strings.substring(tx.cardPersonal.cardNumber,tx.cardPersonal.cardNumber.length()-4)}"></td>
+          <td class="border px-4 py-3 text-center">
+    <span th:if="${#strings.equalsIgnoreCase(tx.type, 'entrate')}" class="text-green-500 text-xl">▲</span>
+    <span th:if="${#strings.equalsIgnoreCase(tx.type, 'uscite')}" class="text-red-500 text-xl">▼</span>
+    <span th:if="${!#strings.equalsIgnoreCase(tx.type, 'entrate') and !#strings.equalsIgnoreCase(tx.type, 'uscite')}" class="text-gray-400 text-xl">–</span>
+</td>
+          <td class="border px-4 py-3" th:text="${tx.description}"></td>
+          <td class="border px-4 py-3 text-right" th:text="${#numbers.formatDecimal(tx.amount,1,'POINT',2,'POINT')}"></td>
+        </tr>
+      </tbody>
+      <tbody th:if="${#lists.isEmpty(transactions)}">
+        <tr>
+          <td colspan="7" class="border px-4 py-3 text-center text-gray-500">Nessuna transazione disponibile.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 </body>

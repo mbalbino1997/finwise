@@ -21,41 +21,31 @@
     <div class="overflow-x-auto bg-white rounded-lg shadow">
         <table class="min-w-full text-sm divide-y divide-gray-200">
             <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
-                <tr>
-                    <th class="px-4 py-3">CODICE</th>
-                    <th class="px-4 py-3">Tipo</th>
-                    <th class="px-4 py-3">Canone (€)</th>
-                    <th class="px-4 py-3">Interesse (%)</th>
-                    <th class="px-4 py-3">Saldo Minimo (€)</th>
-                    <th class="px-4 py-3">Età Limite</th>
-                    <th class="px-4 py-3 text-center">Azioni</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100" th:each="account : ${bankAccounts}">
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3" th:text="${account.promotionNumber}"></td>
-                    <td class="px-4 py-3" th:text="${account.accountType}"></td>
-                    <td class="px-4 py-3" th:text="${#numbers.formatDecimal(account.monthlyFee, 1, 'POINT', 2, 'POINT')}"></td>
-                    <td class="px-4 py-3" th:text="${#numbers.formatDecimal(account.interestRate, 1, 'POINT', 2, 'POINT')}"></td>
-                    <td class="px-4 py-3" th:text="${#numbers.formatDecimal(account.minBalance, 1, 'POINT', 2, 'POINT')}"></td>
-                    <td class="px-4 py-3" th:text="${account.ageLimit != null ? account.ageLimit : 'N/A'}"></td>
-                    <td class="px-4 py-3 text-center space-x-2">
-                        <div class="flex  items-center justify-center space-x-4">
-                            <div th:replace="fragments/button-details :: detail-button(@{/bank-accounts/details/{id}(id=${account.id})})"></div>
-                            <!-- <div th:replace="fragments/button-fragments :: customButton('Modifica', '@{/bank-accounts/edit/{id}(id=${account.id})}')"></div>
-                            <div th:replace="fragments/button-fragments :: customButton( 'Elimina','deleteModal__' + ${account.id})"></div> -->
-                            <!-- <button type="button"
-                            class="text-red-600 hover:text-red-800"
-                            th:data-modal-target="'deleteModal__' + ${account.id}"
-                            th:data-modal-toggle="'deleteModal__' + ${account.id}">
-                                Elimina
-                            </button> -->
-                        </div>
-                        <!-- <button th:href="@{/bank-accounts/details/{id}(id=${account.id})}" class="text-gray-700 hover:text-blue-600">Dettagli</button>
-                        <button th:href="@{/bank-accounts/edit/{id}(id=${account.id})}" class="text-blue-700 hover:text-blue-900">Modifica</button> -->
-                    </td>
-                </tr>
-            </tbody>
+    <tr class="divide-x divide-gray-200">
+        <th class="px-4 py-3">CODICE</th>
+        <th class="px-4 py-3">Tipo</th>
+        <th class="px-4 py-3">Canone (€)</th>
+        <th class="px-4 py-3">Interesse (%)</th>
+        <th class="px-4 py-3">Saldo Minimo (€)</th>
+        <th class="px-4 py-3">Età Limite</th>
+        <th class="px-4 py-3 text-center">Azioni</th>
+    </tr>
+</thead>
+<tbody class="divide-y divide-gray-100" th:each="account : ${bankAccounts}">
+    <tr class="hover:bg-gray-50 divide-x divide-gray-200">
+        <td class="px-4 py-3" th:text="${account.promotionNumber}"></td>
+        <td class="px-4 py-3" th:text="${account.accountType}"></td>
+        <td class="px-4 py-3" th:text="${#numbers.formatDecimal(account.monthlyFee, 1, 'POINT', 2, 'POINT')}"></td>
+        <td class="px-4 py-3" th:text="${#numbers.formatDecimal(account.interestRate, 1, 'POINT', 2, 'POINT')}"></td>
+        <td class="px-4 py-3" th:text="${#numbers.formatDecimal(account.minBalance, 1, 'POINT', 2, 'POINT')}"></td>
+        <td class="px-4 py-3" th:text="${account.ageLimit != null ? account.ageLimit : 'N/A'}"></td>
+        <td class="px-4 py-3 text-center space-x-2">
+            <div class="flex items-center justify-center space-x-4">
+                <div th:replace="fragments/button-details :: detail-button(@{/bank-accounts/details/{id}(id=${account.id})})"></div>
+            </div>
+        </td>
+    </tr>
+</tbody>
         </table>
     </div>
 </section>

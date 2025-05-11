@@ -20,26 +20,27 @@
 
     <div class="overflow-x-auto bg-white rounded-lg shadow">
         <table class="min-w-full text-sm divide-y divide-gray-200">
-            <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
-                <tr>
-                    <th class="px-4 py-3">ID</th>
-                    <th class="px-4 py-3">Numero Carta</th>
-                    <th class="px-4 py-3">CVV</th>
-                    <th class="px-4 py-3">Scadenza</th>
-                    <th class="px-4 py-3 text-center">Azioni</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100" th:each="card : ${cards}">
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3" th:text="${card.id}"></td>
-                    <td class="px-4 py-3" th:text="${#strings.substring(card.cardNumber,0,4)} + ' **** **** ' + ${#strings.substring(card.cardNumber,12)}"></td>
-                    <td class="px-4 py-3" th:text="${card.cvv}"></td>
-                    <td class="px-4 py-3" th:text="${#temporals.format(card.expirationDate, 'MM/yyyy')}"></td>
-                    <td class="px-4 py-3 text-center space-x-2">
-                        <a th:href="@{/card-personals/{id}(id=${card.id})}" class="text-blue-500 hover:text-blue-700">Dettagli</a>
-                    </td>
-                </tr>
-            </tbody>
+            <table class="min-w-full text-sm divide-y divide-gray-200">
+        <thead class="bg-green-100 text-green-900 text-xs uppercase font-semibold">
+            <tr class="divide-x divide-gray-200">
+                <th class="px-4 py-3">ID</th>
+                <th class="px-4 py-3">Numero Carta</th>
+                <th class="px-4 py-3">CVV</th>
+                <th class="px-4 py-3">Scadenza</th>
+                <th class="px-4 py-3 text-center">Azioni</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100" th:each="card : ${cards}">
+            <tr class="hover:bg-gray-50 divide-x divide-gray-200">
+                <td class="px-4 py-3" th:text="${card.id}"></td>
+                <td class="px-4 py-3" th:text="${#strings.substring(card.cardNumber,0,4)} + ' **** **** ' + ${#strings.substring(card.cardNumber,12)}"></td>
+                <td class="px-4 py-3" th:text="${card.cvv}"></td>
+                <td class="px-4 py-3" th:text="${#temporals.format(card.expirationDate, 'MM/yyyy')}"></td>
+                <td class="px-4 py-3 text-center space-x-2">
+                    <a th:href="@{/card-personals/{id}(id=${card.id})}" class="text-blue-500 hover:text-blue-700">Dettagli</a>
+                </td>
+            </tr>
+        </tbody>
         </table>
     </div>
 </section>
