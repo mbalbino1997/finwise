@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "cards")
@@ -22,6 +23,7 @@ public class Card {
     private BigDecimal spendingLimit;
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<CardPersonal> cardPersonals = new ArrayList<>();
 
     @ManyToMany(mappedBy = "cards")

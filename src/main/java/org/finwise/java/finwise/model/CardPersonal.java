@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "card_personal")
 public class CardPersonal {
@@ -30,13 +33,16 @@ public class CardPersonal {
 
     @ManyToOne
     @JoinColumn(name = "profile_user_id", nullable = false)
+    @JsonBackReference
     private ProfileUser profileUser;
 
     @ManyToOne
     @JoinColumn(name = "card_id", nullable = false)
+    @JsonBackReference
     private Card card;
 
     @OneToMany(mappedBy = "cardPersonal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Transaction> transactions = new ArrayList<>();
 
     // Getters and Setters

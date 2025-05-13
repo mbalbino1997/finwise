@@ -15,26 +15,27 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     
     @Bean
-    @SuppressWarnings("removal")
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
-            .requestMatchers("/", "/home").hasRole("ADMIN")
-            .requestMatchers("/login", "/css/**", "/js/**","/images/**").permitAll()
-            .anyRequest().authenticated()
-        .and()
-            .formLogin()
-                .loginPage("/login") // <- Qui specifichi il tuo login personalizzato
-                .defaultSuccessUrl("/", true)
-                .permitAll()
-        .and()
-            .logout()
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
-        .and()
-            .exceptionHandling();
+@SuppressWarnings("removal")
+SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests()
+        .requestMatchers(HttpMethod.GET, "/api/bankaccount/**").permitAll() // <-- GET pubblico
+        .requestMatchers("/", "/home").hasRole("ADMIN")
+        .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
+        .anyRequest().authenticated()
+    .and()
+        .formLogin()
+            .loginPage("/login")
+            .defaultSuccessUrl("/", true)
+            .permitAll()
+    .and()
+        .logout()
+            .logoutSuccessUrl("/login?logout")
+            .permitAll()
+    .and()
+        .exceptionHandling();
 
-        return http.build();
-    }
+    return http.build();
+}
 
     @Bean
     @SuppressWarnings("deprecation")

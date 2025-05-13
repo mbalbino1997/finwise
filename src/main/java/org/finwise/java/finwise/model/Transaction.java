@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "transactions")
 public class Transaction {
@@ -27,10 +29,12 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "card_personal_id", nullable = false)
+    @JsonBackReference
     private CardPersonal cardPersonal;
 
     // Getters and Setters

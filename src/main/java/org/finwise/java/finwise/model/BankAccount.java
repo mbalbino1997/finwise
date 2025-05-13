@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "bank_account")
 public class BankAccount {
@@ -44,7 +46,8 @@ public class BankAccount {
         name = "bank_account_card",
         joinColumns = @JoinColumn(name = "bank_account_id"),
         inverseJoinColumns = @JoinColumn(name = "card_id")
-    )
+        )
+    @JsonManagedReference
     private List<Card> cards = new ArrayList<>();
 
     @ManyToMany
@@ -52,7 +55,8 @@ public class BankAccount {
         name = "bank_account_promotion",
         joinColumns = @JoinColumn(name = "bank_account_id"),
         inverseJoinColumns = @JoinColumn(name = "promotion_id")
-    )
+        )
+    @JsonManagedReference
     private List<Promotion> promotions = new ArrayList<>();
 
     // Getters and Setters
