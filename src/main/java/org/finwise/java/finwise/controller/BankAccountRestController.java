@@ -2,42 +2,42 @@ package org.finwise.java.finwise.controller;
 
 import java.util.List;
 
+import org.finwise.java.finwise.model.HomepageDataDTO;
 import org.finwise.java.finwise.model.BankAccount;
+import org.finwise.java.finwise.model.Promotion;
 import org.finwise.java.finwise.service.BankAccountService;
+import org.finwise.java.finwise.service.PromotionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin    
+@CrossOrigin
 @RequestMapping("/api/bankaccount")
 public class BankAccountRestController {
+
     @Autowired
     private BankAccountService bankAccountService;
-    
+
+    @Autowired
+    private PromotionService promotionService;
+
     @GetMapping
-    public List<BankAccount> index() {
+    public ResponseEntity<HomepageDataDTO> index() {
         List<BankAccount> bankAccounts = bankAccountService.findAll();
-        return bankAccounts;
+        List<Promotion> promotions = promotionService.findAll();
+
+        HomepageDataDTO homepageData = new HomepageDataDTO(bankAccounts, promotions);
+        return ResponseEntity.ok(homepageData);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BankAccount> show(@Valid @PathVariable Integer id) {
+    public ResponseEntity<BankAccount> show(@PathVariable Integer id) {
         BankAccount bankAccount = bankAccountService.findById(id);
         if (bankAccount == null) {
-            return new ResponseEntity<BankAccount>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<BankAccount>(bankAccount,HttpStatus.OK);
+        return ResponseEntity.ok(bankAccount);
     }
-    
 }
