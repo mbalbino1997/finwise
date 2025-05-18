@@ -1,8 +1,12 @@
 package org.finwise.java.finwise.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -21,5 +25,29 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS512)
                 .compact();
+    }
+
+    //aggiunte 
+    public String extractUsername(String token) {
+    return Jwts.parserBuilder()
+               .setSigningKey(SECRET_KEY)
+               .build()
+               .parseClaimsJws(token)
+               .getBody()
+               .getSubject();
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                                .setSigningKey(SECRET_KEY)
+                                .build()
+                                .parseClaimsJws(token)
+                                .getBody();
+            return claims.getSubject().equals(userDetails.getUsername())
+                && !claims.getExpiration().before(new Date());
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }
