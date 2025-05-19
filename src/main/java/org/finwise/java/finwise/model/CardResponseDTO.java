@@ -1,5 +1,6 @@
 package org.finwise.java.finwise.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -8,21 +9,25 @@ public class CardResponseDTO {
     private String cardNumber;
     private String cvv;
     private LocalDate expirationDate;
+    private String cardType; // ← nuovo campo
+    private BigDecimal spendingLimit; // ← nuovo campo
     private List<TransactionResponseDTO> transactions;
 
     public CardResponseDTO() {}
 
     public CardResponseDTO(Integer id, String cardNumber, String cvv,
-                           LocalDate expirationDate,
+                           LocalDate expirationDate, String cardType,
+                           BigDecimal spendingLimit,
                            List<TransactionResponseDTO> transactions) {
         this.id = id;
         this.cardNumber = cardNumber;
         this.cvv = cvv;
         this.expirationDate = expirationDate;
+        this.cardType = cardType;
+        this.spendingLimit = spendingLimit;
         this.transactions = transactions;
     }
 
-    // getters & setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -34,6 +39,12 @@ public class CardResponseDTO {
 
     public LocalDate getExpirationDate() { return expirationDate; }
     public void setExpirationDate(LocalDate expirationDate) { this.expirationDate = expirationDate; }
+
+    public String getCardType() { return cardType; }
+    public void setCardType(String cardType) { this.cardType = cardType; }
+
+    public BigDecimal getSpendingLimit() { return spendingLimit; }
+    public void setSpendingLimit(BigDecimal spendingLimit) { this.spendingLimit = spendingLimit; }
 
     public List<TransactionResponseDTO> getTransactions() { return transactions; }
     public void setTransactions(List<TransactionResponseDTO> transactions) { this.transactions = transactions; }
